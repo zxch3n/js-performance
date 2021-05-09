@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="./getCallbacks.js" type="text/javascript"></script>
   <style>
     li {
       white-space: pre;
@@ -15,6 +16,7 @@
 </head>
 
 <body>
+  <div id="calc">Calculating...</div>
   <ul id="lala"></ul>
   <script>
     const target = document.querySelector('ul');
@@ -24,69 +26,42 @@
       li.textContent = s;
     }
 
-    const callbacks = [
-      {
-        name: 'JS For 1M',
-        callback: () => {
-          for (let i = 0; i < 1e6; i++) { }
+    async function run() {
+      const callbacks = await getCallbacks();
+
+      const map = {};
+      for (const { callback, name, sub } of callbacks) {
+        const startTime = Date.now();
+        let usedTime;
+        let times = 0;
+        while ((usedTime = Date.now() - startTime) < 500) {
+          times++;
+          callback();
         }
-      },
-      {
-        name: 'Normal Add + Assignment 1M',
-        callback: () => {
-          for (let i = 0; i < 1e6; i++) { i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; }
-        }
-      },
-      {
-        name: 'Create Callback to Add 1M',
-        callback: () => {
-          for (let i = 0; i < 1e6;) {
-            let callback = (() => { i = i + 1; });
-            callback();
+
+        let ans = usedTime / times * 1000;
+        if (sub) {
+          if (!map[sub]) {
+            throw new Error(`${sub} should be ahead of ${name}`);
           }
-        },
-        sub: 'JS For 1M',
-      },
-      {
-        name: 'Create ID Callback 1M',
-        callback: () => {
-          for (let i = 0; i < 1e6;) {
-            let callback = x => x;
-            i = callback(i) + 1;
-          }
-        },
-        sub: 'JS For 1M'
-      }
-    ]
 
-
-    const map = {};
-    for (const { callback, name, sub } of callbacks) {
-      const startTime = Date.now();
-      let usedTime;
-      let times = 0;
-      while ((usedTime = Date.now() - startTime) < 500) {
-        times++;
-        callback();
-      }
-
-      let ans = usedTime / times * 1000;
-      if (sub) {
-        if (!map[sub]) {
-          throw new Error();
+          ans -= map[sub];
         }
 
-        ans -= map[sub];
+        map[name] = ans;
+        let output = `[${name.padEnd(30, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
+        if (sub) {
+          output += `  (sub: ${sub})`;
+        }
+
+        print(output)
       }
 
-      map[name] = ans;
-      let output = `[${name.padEnd(30, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
-      if (sub) {
-        output += `  (sub: ${sub})`;
-      }
-
-      print(output)
+      const div = document.querySelector('#calc');
+      div.remove();
     }
+
+    run();
 
   </script>
 </body>
