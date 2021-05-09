@@ -11,6 +11,17 @@ MacBook Pro (13-inch, M1, 2020) - Chrome
 [WASM Recursive Fib 27         ]: 570.125   us
 ```
 
+MacBook Pro (13-inch, M1, 2020) - Safari
+```
+[JS ForLoop 1M                 ]: 333.556   us
+[WASM ForLoop 1M               ]: 334.225   us
+[Normal Add + Assignment 1M    ]: 9.359     us
+[Create Callback to Add 1M     ]: 7650.571  us  (sub: JS ForLoop 1M)
+[Create ID Callback 1M         ]: 3145.611  us  (sub: JS ForLoop 1M)
+[JS Recursive Fib 27           ]: 1730.104  us
+[WASM Recursive Fib 27         ]: 519.211   us
+```
+
 iPad Pro 11-inch (2nd gen) - Safari
 ```
 [JS ForLoop 1M                 ]: 412.541   us
