@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    li {
+      white-space: pre;
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="lala"></ul>
+  <script>
+    const target = document.querySelector('ul');
+    function print(s) {
+      const li = document.createElement('li');
+      target.appendChild(li)
+      li.textContent = s;
+    }
+
+    const callbacks = [
+      {
+        name: 'JS For 1M',
+        callback: () => {
+          for (let i = 0; i < 1e6; i++) { }
+        }
+      },
+      {
+        name: 'Normal Add + Assignment 1M',
+        callback: () => {
+          for (let i = 0; i < 1e6; i++) { i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; i++; }
+        }
+      },
+      {
+        name: 'Create Callback to Add 1M',
+        callback: () => {
+          for (let i = 0; i < 1e6;) {
+            let callback = (() => { i = i + 1; });
+            callback();
+          }
+        },
+        sub: 'JS For 1M',
+      },
+      {
+        name: 'Create ID Callback 1M',
+        callback: () => {
+          for (let i = 0; i < 1e6;) {
+            let callback = x => x;
+            i = callback(i) + 1;
+          }
+        },
+        sub: 'JS For 1M'
+      }
+    ]
+
+
+    const map = {};
+    for (const { callback, name, sub } of callbacks) {
+      const startTime = Date.now();
+      let usedTime;
+      let times = 0;
+      while ((usedTime = Date.now() - startTime) < 500) {
+        times++;
+        callback();
+      }
+
+      let ans = usedTime / times * 1000;
+      if (sub) {
+        if (!map[sub]) {
+          throw new Error();
+        }
+
+        ans -= map[sub];
+      }
+
+      map[name] = ans;
+      let output = `[${name.padEnd(30, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
+      if (sub) {
+        output += `  (sub: ${sub})`;
+      }
+
+      print(output)
+    }
+
+  </script>
+</body>
+
+</html>
