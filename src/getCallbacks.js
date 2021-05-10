@@ -6,7 +6,7 @@ async function getWasmCallback(path, func = "main") {
 }
 
 async function getCallbacks() {
-  const forWasm = await getWasmCallback("./wasm/forLoop.wasm", "forLoop");
+  const forWasm = await getWasmCallback("/src/wasm/forLoop.wasm", "forLoop");
   return [
     {
       name: "JS ForLoop 1M",
@@ -98,7 +98,52 @@ async function getCallbacks() {
     },
     {
       name: "WASM Recursive Fib 27",
-      callback: await getWasmCallback("./wasm/fib27.wasm"),
+      callback: await getWasmCallback("/src/wasm/fib27.wasm"),
+    },
+    {
+      name: "Create Object with 10000 elements",
+      callback: () => {
+        const newObj = { ...objWith10000Elements };
+      },
+    },
+    {
+      name: "Create Object with 10 elements 1K",
+      callback: () => {
+        for (let i = 0; i < 1000; i++) {
+          const newObj = { ...objWith10Elements };
+        }
+      },
+    },
+    {
+      name: "Create Object with 20 elements 1K",
+      callback: () => {
+        for (let i = 0; i < 1000; i++) {
+          const newObj = { ...objWith20Elements };
+        }
+      },
+    },
+    {
+      name: "Create Array with 10000 elements",
+      callback: () => {
+        const newObj = [...array10000];
+      },
     },
   ];
 }
+
+const objWith10Elements = {};
+for (let i = 0; i < 10; i++) {
+  objWith10Elements["a" + i] = {};
+}
+
+const objWith20Elements = {};
+for (let i = 0; i < 20; i++) {
+  objWith20Elements["a" + i] = {};
+}
+
+const objWith10000Elements = {};
+for (let i = 0; i < 10000; i++) {
+  objWith10000Elements["a" + i] = {};
+}
+
+const array10000 = new Array(10000).fill(0).map(() => Math.random());

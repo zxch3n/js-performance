@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="./getCallbacks.js" type="text/javascript"></script>
+  <script src="./src/getCallbacks.js" type="text/javascript"></script>
   <style>
     li {
       white-space: pre;
@@ -16,8 +16,8 @@
 </head>
 
 <body>
-  <div id="calc">Calculating...</div>
   <ul id="lala"></ul>
+  <div id="calc">Calculating... <span id="progress"></span></div>
   <script>
     const target = document.querySelector('ul');
     function print(s) {
@@ -26,10 +26,13 @@
       li.textContent = s;
     }
 
+    const progress = document.querySelector('#progress');
+
     async function run() {
       const callbacks = await getCallbacks();
 
       const map = {};
+      let count = 0;
       for (const { callback, name, sub } of callbacks) {
         const startTime = Date.now();
         let usedTime;
@@ -49,12 +52,15 @@
         }
 
         map[name] = ans;
-        let output = `[${name.padEnd(30, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
+        let output = `[${name.padEnd(36, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
         if (sub) {
           output += `  (sub: ${sub})`;
         }
 
         print(output)
+        count++;
+        progress.textContent = `${(count / callbacks.length * 100).toFixed(1)}%`;
+        await new Promise(r => setTimeout(r));
       }
 
       const div = document.querySelector('#calc');
