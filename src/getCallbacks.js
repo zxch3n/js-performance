@@ -6,7 +6,7 @@ async function getWasmCallback(path, func = "main") {
 }
 
 async function getCallbacks() {
-  const forWasm = await getWasmCallback("/src/wasm/forLoop.wasm", "forLoop");
+  const forWasm = await getWasmCallback("./src/wasm/forLoop.wasm", "forLoop");
   return [
     {
       name: "JS ForLoop 1M",
@@ -98,7 +98,7 @@ async function getCallbacks() {
     },
     {
       name: "WASM Recursive Fib 27",
-      callback: await getWasmCallback("/src/wasm/fib27.wasm"),
+      callback: await getWasmCallback("./src/wasm/fib27.wasm"),
     },
     {
       name: "Create Object with 10000 elements",
