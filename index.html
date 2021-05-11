@@ -28,12 +28,32 @@
 
     const progress = document.querySelector('#progress');
 
+    function getTime(ms, name = 'ms') {
+      if (ms > 1) {
+        return ms.toFixed(2).padEnd(10, ' ') + name;
+      }
+
+      if (name === 'ms') {
+        return getTime(ms * 1000, 'us')
+      }
+
+      if (name === 'us') {
+        return getTime(ms * 1000, 'ns')
+      }
+
+      if (name === 'ns') {
+        return getTime(ms * 1000, 'ps')
+      }
+
+      return ms.toString().padEnd(10, ' ') + name;
+    }
+
     async function run() {
       const callbacks = await getCallbacks();
 
       const map = {};
       let count = 0;
-      for (const { callback, name, sub } of callbacks) {
+      for (const { callback, name, postProcess } of callbacks) {
         const startTime = Date.now();
         let usedTime;
         let times = 0;
@@ -42,21 +62,13 @@
           callback();
         }
 
-        let ans = usedTime / times * 1000;
-        if (sub) {
-          if (!map[sub]) {
-            throw new Error(`${sub} should be ahead of ${name}`);
-          }
-
-          ans -= map[sub];
+        let ans = usedTime / times;
+        if (postProcess) {
+          ans = postProcess(ans, map);
         }
 
         map[name] = ans;
-        let output = `[${name.padEnd(36, ' ')}]: ${ans.toFixed(3).padEnd(10, ' ')}us`;
-        if (sub) {
-          output += `  (sub: ${sub})`;
-        }
-
+        let output = `[${name.padEnd(36, ' ')}]: ${getTime(ans)}`;
         print(output)
         count++;
         progress.textContent = `${(count / callbacks.length * 100).toFixed(1)}%`;
