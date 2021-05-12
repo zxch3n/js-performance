@@ -9,6 +9,43 @@ async function getCallbacks() {
   const forWasm = await getWasmCallback("./src/wasm/forLoop.wasm", "forLoop");
   return [
     {
+      name: "Iterating array with 10000 nodes",
+      callback: () => {
+        let sum = 0;
+        for (const item of array10000) {
+          sum += item;
+        }
+
+        return sum;
+      },
+    },
+    {
+      name: "Iterating tree with 10000 nodes",
+      callback: () => {
+        let sum = 0;
+        function iter(node) {
+          sum += node.value;
+          node.children.forEach(iter);
+        }
+
+        iter(tree10000);
+        return sum;
+      },
+    },
+    {
+      name: "Iterating tree with 50000 nodes",
+      callback: () => {
+        let sum = 0;
+        function iter(node) {
+          sum += node.value;
+          node.children.forEach(iter);
+        }
+
+        iter(tree50000);
+        return sum;
+      },
+    },
+    {
       name: "JS ForLoop 1M",
       callback: () => {
         for (let i = 0; i < 1e6; i++) {}
@@ -143,32 +180,6 @@ async function getCallbacks() {
         }
       },
       postProcess: (x) => x / 1000,
-    },
-    {
-      name: "Iterating tree with 10000 nodes",
-      callback: () => {
-        let sum = 0;
-        function iter(node) {
-          sum += node.value;
-          node.children.forEach(iter);
-        }
-
-        iter(tree10000);
-        return sum;
-      },
-    },
-    {
-      name: "Iterating tree with 50000 nodes",
-      callback: () => {
-        let sum = 0;
-        function iter(node) {
-          sum += node.value;
-          node.children.forEach(iter);
-        }
-
-        iter(tree50000);
-        return sum;
-      },
     },
   ];
 }
