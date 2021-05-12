@@ -144,6 +144,32 @@ async function getCallbacks() {
       },
       postProcess: (x) => x / 1000,
     },
+    {
+      name: "Iterating tree with 10000 nodes",
+      callback: () => {
+        let sum = 0;
+        function iter(node) {
+          sum += node.value;
+          node.children.forEach(iter);
+        }
+
+        iter(tree10000);
+        return sum;
+      },
+    },
+    {
+      name: "Iterating tree with 50000 nodes",
+      callback: () => {
+        let sum = 0;
+        function iter(node) {
+          sum += node.value;
+          node.children.forEach(iter);
+        }
+
+        iter(tree50000);
+        return sum;
+      },
+    },
   ];
 }
 
@@ -164,3 +190,24 @@ for (let i = 0; i < 10000; i++) {
 
 const array10000 = new Array(10000).fill(0).map(() => Math.random());
 const array10 = new Array(10).fill(0).map(() => Math.random());
+
+function createTreeNode(children) {
+  return { value: Math.random(), children };
+}
+function createTree(n) {
+  const childNum = n - 1;
+  if (n <= 5) {
+    return createTreeNode(
+      new Array(childNum).fill(0).map(() => createTreeNode([]))
+    );
+  }
+
+  const leftN = Math.floor(childNum / 2);
+  const rightN = childNum - leftN;
+  const left = createTree(leftN);
+  const right = createTree(rightN);
+  return createTreeNode([left, right]);
+}
+
+const tree10000 = createTree(10000);
+const tree50000 = createTree(50000);
