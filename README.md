@@ -75,26 +75,28 @@ MacBook Pro (13-inch, M1, 2020) - Safari
 
 iPad Pro 11-inch (2nd gen) - Safari
 ```
-[Iterating array with 10000 nodes              ]: 18.72     us
-[Iterating tree with 10000 nodes               ]: 155.88    us
-[Iterating tree with 50000 nodes               ]: 744.05    us
-[Post Message to Worker                        ]: 368.46    ns
-[Post Array with 10000 Elements to Worker      ]: 166.17    us
-[Post Tree with 10000 Elements to Worker       ]: 3.56      ms
-[Post Stringified tree10000 to Worker          ]: 230.84    us
-[JSON Stringify tree10000                      ]: 3.82      ms
-[JS ForLoop 1M                                 ]: 436.30    us
-[WASM ForLoop 1M                               ]: 450.45    us
-[Normal Add + Assignment                       ]: 12.23     ps
-[Create Callback to Add                        ]: 10.48     ns
-[Create ID Callback                            ]: 4.64      ns
-[JS Recursive Fib 27                           ]: 1.65      ms
-[WASM Recursive Fib 27                         ]: 708.22    us
-[Create Object with 10000 elements             ]: 1.65      ms
-[Create Object with 10 elements                ]: 1.24      us
-[Create Object with 20 elements                ]: 2.46      us
-[Create Array with 10000 elements              ]: 13.68     us
-[Create Array with 10 elements                 ]: 17.52     ns
+[Iterating array with 10000 nodes              ]: 16.12     us
+[Iterating tree with 10000 nodes               ]: 110.79    us
+[Iterating tree with 50000 nodes               ]: 535.91    us
+[Post Message to Worker                        ]: 296.56    ns
+[Post Message to Worker 1MB                    ]: 149.88    us
+[Post Message to Worker 10MB                   ]: 5.98      ms
+[Post Array with 10000 Elements to Worker      ]: 134.05    us
+[Post Tree with 10000 Elements to Worker       ]: 2.87      ms
+[Post Stringified tree10000 to Worker          ]: 61.03     us
+[JSON Stringify tree10000                      ]: 3.16      ms
+[JS ForLoop 1M                                 ]: 315.06    us
+[WASM ForLoop 1M                               ]: 335.35    us
+[Normal Add + Assignment                       ]: 9.40      ps
+[Create Callback to Add                        ]: 7.90      ns
+[Create ID Callback                            ]: 3.72      ns
+[JS Recursive Fib 27                           ]: 1.38      ms
+[WASM Recursive Fib 27                         ]: 519.21    us
+[Create Object with 10000 elements             ]: 1.19      ms
+[Create Object with 10 elements                ]: 904.16    ns
+[Create Object with 20 elements                ]: 1.82      us
+[Create Array with 10000 elements              ]: 8.78      us
+[Create Array with 10 elements                 ]: 11.84     ns
 ```
 
 Huawei Mate 10 Pro - Chrome
