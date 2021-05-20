@@ -19,6 +19,12 @@
   <ul id="lala"></ul>
   <div id="calc">Calculating... <span id="progress"></span></div>
   <script>
+    function wrap(cb) {
+      try {
+        eval(`%NeverOptimizeFunction(cb)`);
+      } catch (e) { console.error(e) }
+    }
+
     const target = document.querySelector('ul');
     function print(s) {
       const li = document.createElement('li');
@@ -30,7 +36,7 @@
 
     function getTime(ms, name = 'ms') {
       if (ms > 1) {
-        return ms.toFixed(2).padEnd(10, ' ') + name;
+        return `${ms.toFixed(2)}`.padEnd(10, ' ') + name;
       }
 
       if (name === 'ms') {
@@ -45,7 +51,7 @@
         return getTime(ms * 1000, 'ps')
       }
 
-      return ms.toString().padEnd(10, ' ') + name;
+      return `${ms}`.padEnd(10, ' ') + name;
     }
 
     async function run() {
@@ -54,21 +60,21 @@
       const map = {};
       let count = 0;
       for (const { callback, name, postProcess } of callbacks) {
-        const startTime = Date.now();
-        let usedTime;
+        const startTime = performance.now();
         let times = 0;
-        while ((usedTime = Date.now() - startTime) < 500) {
-          times++;
+        wrap(callback);
+        while (performance.now() - startTime < 500) {
           callback();
+          times++;
         }
 
-        let ans = usedTime / times;
+        let avg = (performance.now() - startTime) / times;
         if (postProcess) {
-          ans = postProcess(ans, map);
+          avg = postProcess(avg, map);
         }
 
-        map[name] = ans;
-        let output = `[${name.padEnd(36, ' ')}]: ${getTime(ans)}`;
+        map[name] = avg;
+        let output = `[${name.padEnd(46, ' ')}]: ${getTime(avg)}`;
         print(output)
         count++;
         progress.textContent = `${(count / callbacks.length * 100).toFixed(1)}%`;

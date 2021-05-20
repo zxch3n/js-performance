@@ -5,6 +5,8 @@ async function getWasmCallback(path, func = "main") {
   return instance.exports[func];
 }
 
+const worker = new Worker("/src/worker.js");
+
 async function getCallbacks() {
   const forWasm = await getWasmCallback("./src/wasm/forLoop.wasm", "forLoop");
   return [
@@ -15,7 +17,6 @@ async function getCallbacks() {
         for (const item of array10000) {
           sum += item;
         }
-
         return sum;
       },
     },
@@ -43,6 +44,51 @@ async function getCallbacks() {
 
         iter(tree50000);
         return sum;
+      },
+    },
+    {
+      name: "Post Message to Worker",
+      callback: () => {
+        for (let i = 0; i < 1000; i++) {
+          worker.postMessage(["abj", "cde"]);
+        }
+      },
+      postProcess: (x) => x / 1000,
+    },
+    {
+      name: "Post Message to Worker 1MB",
+      callback: () => {
+        worker.postMessage(string1MB);
+      },
+    },
+    {
+      name: "Post Message to Worker 10MB",
+      callback: () => {
+        worker.postMessage(string10MB);
+      },
+    },
+    {
+      name: "Post Array with 10000 Elements to Worker",
+      callback: () => {
+        worker.postMessage(array10000);
+      },
+    },
+    {
+      name: "Post Tree with 10000 Elements to Worker",
+      callback: () => {
+        worker.postMessage(tree10000);
+      },
+    },
+    {
+      name: "Post Stringified tree10000 to Worker",
+      callback: () => {
+        worker.postMessage(stringifiedTree10000);
+      },
+    },
+    {
+      name: "JSON Stringify tree10000",
+      callback: () => {
+        JSON.stringify(tree10000);
       },
     },
     {
@@ -221,4 +267,17 @@ function createTree(n) {
 }
 
 const tree10000 = createTree(10000);
+const stringifiedTree10000 = JSON.stringify(tree10000);
 const tree50000 = createTree(50000);
+let string1MB = "";
+let string10MB = "";
+const source =
+  "0123456789啊起舞日地的覅凹槽abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+for (let i = 0; i < 1e6; i++) {
+  index = Math.floor(Math.random() * source.length);
+  string1MB += source[index];
+}
+
+while (string10MB.length < 1e7) {
+  string10MB += string1MB;
+}
