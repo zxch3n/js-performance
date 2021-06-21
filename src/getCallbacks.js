@@ -11,6 +11,42 @@ async function getCallbacks() {
   const forWasm = await getWasmCallback("./src/wasm/forLoop.wasm", "forLoop");
   return [
     {
+      name: "insert to DB 1K",
+      callback: async () => {
+        const start = performance.now();
+        const promise = insert(db1K);
+        const used = performance.now() - start;
+        console.log(used);
+        await promise;
+      },
+    },
+    {
+      name: "insert to DB 100K",
+      callback: async () => {
+        await insert(db100K);
+      },
+    },
+    {
+      name: "find in DB 1K",
+      callback: async () => {
+        await find(db1K);
+      },
+    },
+    {
+      name: "find in DB 100K",
+      callback: async () => {
+        await find(db100K);
+      },
+    },
+    {
+      name: "iter DB with 1K items",
+      callback: searchIn1K,
+    },
+    {
+      name: "iter DB with 100K items",
+      callback: searchIn100K,
+    },
+    {
       name: "Iterating array with 10000 nodes",
       callback: () => {
         let sum = 0;
