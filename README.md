@@ -1,6 +1,8 @@
 # JS Performance Benchmark
 
-MacBook Pro (13-inch, M1, 2020) - Chrome - ([without optimization](https://stackoverflow.com/a/59013122))
+MacBook Pro (13-inch, M1, 2020) - Chrome -
+([without optimization](https://stackoverflow.com/a/59013122))
+
 ```
 [Iterating array with 10000 nodes              ]: 380.84    us
 [Iterating tree with 10000 nodes               ]: 136.24    us
@@ -24,7 +26,14 @@ MacBook Pro (13-inch, M1, 2020) - Chrome - ([without optimization](https://stack
 ```
 
 MacBook Pro (13-inch, M1, 2020) - Chrome
+
 ```
+[insert to IndexedDB                           ]: 19.98     ms
+[insert to IndexedDB 1K                        ]: 155.40    ms
+[find in IndexedDB with 1K items               ]: 188.97    us
+[find in IndexedDB with 100K items             ]: 141.36    us
+[iter IndexedDB with 1K items                  ]: 17.63     ms
+[iter IndexedDB with 100K items                ]: 1543.00   ms
 [Iterating array with 10000 nodes              ]: 24.55     us
 [Iterating tree with 10000 nodes               ]: 177.95    us
 [Iterating tree with 50000 nodes               ]: 738.86    us
@@ -50,6 +59,7 @@ MacBook Pro (13-inch, M1, 2020) - Chrome
 ```
 
 MacBook Pro (13-inch, M1, 2020) - Safari
+
 ```
 [Iterating array with 10000 nodes              ]: 16.50     us
 [Iterating tree with 10000 nodes               ]: 109.46    us
@@ -74,6 +84,7 @@ MacBook Pro (13-inch, M1, 2020) - Safari
 ```
 
 iPad Pro 11-inch (2nd gen) - Safari
+
 ```
 [Iterating array with 10000 nodes              ]: 104.32    us
 [Iterating tree with 10000 nodes               ]: 1.19      ms
@@ -100,6 +111,7 @@ iPad Pro 11-inch (2nd gen) - Safari
 ```
 
 Huawei Mate 10 Pro - Chrome
+
 ```
 [Iterating array with 10000 nodes              ]: 180.64    us
 [Iterating tree with 10000 nodes               ]: 673.99    us
@@ -127,5 +139,7 @@ Huawei Mate 10 Pro - Chrome
 
 ## Benchmark Pitfall
 
-- You should avoid triggering compiler optimization when compiling C/Rust/C++ to WASM.
-- Before benchmarking remember to close the browser devtool and disable all the plugins
+- You should avoid triggering compiler optimization when compiling C/Rust/C++ to
+  WASM.
+- Before benchmarking remember to close the browser devtool and disable all the
+  plugins

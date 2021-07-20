@@ -44,11 +44,13 @@ async function run() {
     const startTime = performance.now();
     let times = 0;
     wrap(callback);
+    console.log(name);
     while (performance.now() - startTime < 500) {
       await callback();
       times++;
     }
 
+    console.log("edn");
     let avg = (performance.now() - startTime) / times;
     if (postProcess) {
       avg = postProcess(avg, map);

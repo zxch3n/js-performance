@@ -97,25 +97,34 @@ async function searchIn100K() {
   });
 }
 
-async function insert(db) {
+async function insert(db, num = 1) {
   const objStore = db.transaction("docs", "readwrite").objectStore("docs");
-  const request = objStore.add({
-    name: "name",
-    value: Math.random().toString(),
-  });
+  const req = [];
 
-  return new Promise((r) => {
-    request.onsuccess = r;
-    objStore.transaction.onsuccess = r;
-  });
+  for (let i = 0; i < num; i++) {
+    const request = objStore.add({
+      name: "name",
+      value: Math.random().toString(),
+    });
+    req.push(
+      new Promise((r) => {
+        request.onsuccess = r;
+      })
+    );
+  }
+
+  await Promise.all(req);
 }
 
 async function find(db) {
   const objStore = db.transaction("docs").objectStore("docs");
   const request = objStore.get(12);
-  return new Promise((r) => {
+  return new Promise((r, reject) => {
     request.onsuccess = (event) => {
       r(event.result);
+    };
+    request.onerror = (event) => {
+      reject(event.result);
     };
   });
 }
